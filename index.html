@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einkaufsliste</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- jsPDF einbinden -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="todos">
+            <h2>TO-DOs</h2>
+            <button onclick="addToTodos()">Hinzufügen</button>
+            <ul id="todos-list"></ul>
+        </div>
+        <div class="sub-container">
+            <div class="card" id="lebensmittel">
+                <h2>Lebensmittel</h2>
+                <button onclick="addToLebensmittel()">Hinzufügen</button>
+                <ul id="lebensmittel-list"></ul>
+                <button class="action-button" onclick="getCookingIdeas()">Ideen zum Kochen</button>
+            </div>
+            <div class="card" id="einkaufsliste">
+                <h2>Einkaufsliste</h2>
+                <button onclick="addToEinkaufsliste()">Hinzufügen</button>
+                <ul id="einkaufsliste-list"></ul>
+                <button class="action-button" onclick="printEinkaufsliste()">Einkaufsliste drucken</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

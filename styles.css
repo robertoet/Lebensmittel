@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    gap: 5px;
+    padding: 5px;
+}
+
+.sub-container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    gap: 5px;
+}
+
+.card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#todos {
+    flex: 0 0 auto;
+    max-height: 30%;
+    overflow-y: auto;
+}
+
+h2 {
+    margin: 0 0 15px 0;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 0 0 0 5px;
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #ccc;
+}
+
+.action-button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    background-color: #ccc;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+li {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right-align {
+    display: flex;
+    align-items: center;
+}
+
+.date {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 5px;
+}
+
+select {
+    padding: 3px;
+    margin-left: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+select:hover {
+    background-color: #f0f0f0;
+}
