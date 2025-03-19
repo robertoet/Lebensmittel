@@ -1,3 +1,17 @@
+// Firebase initialisieren
+const firebaseConfig = {
+    apiKey: "deine-api-key",
+    authDomain: "dein-projekt.firebaseapp.com",
+    projectId: "dein-projekt",
+    storageBucket: "dein-projekt.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef123456"
+};
+
+// Firebase initialisieren
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // Listen DOM-Elemente
 let todosList = document.getElementById('todos-list');
 let lebensmittelList = document.getElementById('lebensmittel-list');
@@ -193,4 +207,4 @@ function printEinkaufsliste() {
 }
 
 // Liste beim Laden der Seite initialisieren
-window.onload = loadLists;
+loadLists();
