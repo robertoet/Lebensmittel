@@ -269,7 +269,7 @@ function getCookingIdeas() {
         return;
     }
 
-    let prompt = `Gib mir drei einfache Gerichte, die ich aus dieser Ansammlung von Lebensmitteln kochen kann. Die Mahlzeiten sollen ausgewogen und proteinreich sein. Wenn Lebensmittel fehlen, markiere sie, in dem du sie unterstreichst. Lebensmittelliste: ${items}`;
+    let prompt = `Gib mir drei einfache Gerichte, die ich aus dieser Ansammlung von Lebensmitteln kochen kann (Es müssen nicht alle benutzt werden). Die Mahlzeiten sollen ausgewogen und proteinreich sein. Wenn Lebensmittel fehlen, markiere sie, in dem du sie unterstreichst. Lebensmittelliste: ${items}`;
     let grokUrl = 'https://grok.com/';
 
     // Kopiere den Prompt in die Zwischenablage
