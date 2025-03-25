@@ -1,17 +1,3 @@
-// Firebase initialisieren
-const firebaseConfig = {
-    apiKey: "deine-api-key",
-    authDomain: "dein-projekt.firebaseapp.com",
-    projectId: "dein-projekt",
-    storageBucket: "dein-projekt.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456"
-};
-
-// Firebase initialisieren
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
 // Listen DOM-Elemente
 let todosList = document.getElementById('todos-list');
 let lebensmittelList = document.getElementById('lebensmittel-list');
@@ -35,6 +21,12 @@ function loadLists() {
     einkaufslisteData.forEach(item => addToEinkaufslisteList(item.text));
 }
 
+// Hilfsfunktion zur Korrektur des Anfangsbuchstabens
+// function capitalizeFirstLetter(text) {
+//     if (!text) return text;
+//     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+// }
+
 // Hilfsfunktion zum Hinzufügen eines Elements zur TO-DOs-Liste
 function addToTodosList(text, date) {
     let li = document.createElement('li');
@@ -56,6 +48,57 @@ function addToTodosList(text, date) {
 
     li.appendChild(rightContainer);
     todosList.appendChild(li);
+
+    // Bearbeitungsfunktion hinzufügen
+    li.addEventListener('click', function(e) {
+        // Ignoriere Klicks auf den Button oder den Container
+        if (e.target.tagName === 'BUTTON' || e.target.className === 'right-align' || e.target.tagName === 'SPAN') {
+            return;
+        }
+
+        // Aktuellen Text speichern
+        let oldText = text;
+
+        // Eingabefeld erstellen
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        input.style.width = '50%'; // Optional: Breite anpassen
+
+        // Bestehenden Text und Container entfernen
+        li.textContent = '';
+        li.appendChild(input);
+        li.appendChild(rightContainer);
+        input.focus();
+
+        // Bei Enter oder Verlassen des Eingabefelds speichern
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                saveEdit();
+            }
+        });
+
+        function saveEdit() {
+            let newText = input.value.trim();
+            if (newText && newText !== oldText) {
+                // Listenelement aktualisieren
+                li.textContent = newText;
+                li.appendChild(rightContainer);
+
+                // Datenstruktur aktualisieren
+                let item = todosData.find(i => i.text === oldText);
+                if (item) {
+                    item.text = newText;
+                    saveLists();
+                }
+            } else {
+                // Alten Text wiederherstellen, wenn nichts geändert wurde
+                li.textContent = oldText;
+                li.appendChild(rightContainer);
+            }
+        }
+    });
 }
 
 // Hilfsfunktion zum Hinzufügen eines Elements zur Lebensmittel-Liste
@@ -101,6 +144,51 @@ function addToLebensmittelList(text, date, location = 'Ort') {
 
     li.appendChild(rightContainer);
     lebensmittelList.appendChild(li);
+
+    // Bearbeitungsfunktion hinzufügen
+    li.addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT' || e.target.className === 'right-align' || e.target.tagName === 'SPAN') {
+            return;
+        }
+
+        let oldText = text;
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        input.style.width = '50%';
+
+        li.textContent = '';
+        li.innerHTML += `<span class="date">(${date})</span>`;
+        li.insertBefore(input, li.firstChild);
+        li.appendChild(rightContainer);
+        input.focus();
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                saveEdit();
+            }
+        });
+
+        function saveEdit() {
+            let newText = input.value.trim();
+            if (newText && newText !== oldText) {
+                li.textContent = newText + ' ';
+                li.innerHTML += `<span class="date">(${date})</span>`;
+                li.appendChild(rightContainer);
+
+                let item = lebensmittelData.find(i => i.text === oldText);
+                if (item) {
+                    item.text = newText;
+                    saveLists();
+                }
+            } else {
+                li.textContent = oldText + ' ';
+                li.innerHTML += `<span class="date">(${date})</span>`;
+                li.appendChild(rightContainer);
+            }
+        }
+    });
 }
 
 // Hilfsfunktion zum Hinzufügen eines Elements zur Einkaufsliste
@@ -183,8 +271,20 @@ function getCookingIdeas() {
 
     let prompt = `Gib mir drei einfache Gerichte, die ich aus dieser Ansammlung von Lebensmitteln kochen kann. Die Mahlzeiten sollen ausgewogen und proteinreich sein. Wenn Lebensmittel fehlen, markiere sie, in dem du sie unterstreichst. Lebensmittelliste: ${items}`;
     let grokUrl = 'https://grok.com/';
-    let encodedPrompt = encodeURIComponent(prompt);
-    window.open(`${grokUrl}?prompt=${encodedPrompt}`, '_blank');
+
+    // Kopiere den Prompt in die Zwischenablage
+    navigator.clipboard.writeText(prompt)
+        .then(() => {
+            // Öffne die URL in einem neuen Tab
+            window.open(grokUrl, '_blank');
+            // Optional: Informiere den Nutzer, dass der Prompt kopiert wurde
+            console.log('Prompt wurde in die Zwischenablage kopiert. Verwende Strg+V oder Cmd+V zum Einfügen.');
+        })
+        .catch(err => {
+            console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
+            // Fallback: Öffne die URL trotzdem
+            window.open(grokUrl, '_blank');
+        });
 }
 
 // Funktion für "Einkaufsliste drucken" (PDF-Download)
@@ -207,4 +307,4 @@ function printEinkaufsliste() {
 }
 
 // Liste beim Laden der Seite initialisieren
-loadLists();
+window.onload = loadLists();
